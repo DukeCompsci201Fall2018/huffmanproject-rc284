@@ -69,7 +69,6 @@ public class HuffProcessor {
 	 */
 	private int[] readForCounts(BitInputStream in) {
 		int[] freq = new int[ALPH_SIZE + 1]; // 257 values --> 256 possible ASCII + PSEUDO_EOF
-		freq[PSEUDO_EOF] = 1; // Indicate one occurance of PSEUDO_EOF
 
 		for (int i = 0; i < freq.length; i++) {
 			int bits = in.readBits(BITS_PER_WORD); // Read 8 bits (a char)
@@ -77,6 +76,7 @@ public class HuffProcessor {
 			freq[bits]++; // increase freq of that bit by 1
 		}
 
+		freq[PSEUDO_EOF] = 1; // Indicate one occurance of PSEUDO_EOF
 		return freq;
 	}
 
@@ -135,7 +135,7 @@ public class HuffProcessor {
 		}
 		else { // If node a leaf
 			out.writeBits(1,1); // Add 1 to preorder
-			out.writeBits(BITS_PER_WORD + 1, root.myValue); // Add 8-bit val to preorder
+			out.writeBits(BITS_PER_WORD + 1, 1); // Add 8-bit val to preorder
 		}
 	}
 
@@ -157,8 +157,8 @@ public class HuffProcessor {
 			}
 		}
 
-		String code = codings[PSEUDO_EOF]; // Get encoding for PSEUDO_EOF
-		out.writeBits(code.length(), Integer.parseInt(code,2)); // End file with encoded PSEUDO_EOF
+		String pseudo = codings[PSEUDO_EOF]; // Get encoding for PSEUDO_EOF
+		out.writeBits(pseudo.length(), Integer.parseInt(pseudo,2)); // End file with encoded PSEUDO_EOF
 	}
 
 
