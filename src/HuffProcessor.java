@@ -70,9 +70,8 @@ public class HuffProcessor {
 	private int[] readForCounts(BitInputStream in) {
 		int[] freq = new int[ALPH_SIZE + 1]; // 257 values --> 256 possible ASCII + PSEUDO_EOF
 
-		for (int i = 0; i < freq.length; i++) {
+		while (bits != -1) { // If sentinel -1 bit, break
 			int bits = in.readBits(BITS_PER_WORD); // Read 8 bits (a char)
-			if (bits == -1) {break;} // If sentinel -1 bit, break
 			freq[bits]++; // increase freq of that bit by 1
 		}
 
