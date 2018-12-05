@@ -50,7 +50,8 @@ public class HuffProcessor {
 		HuffNode root = makeTreeFromCounts(counts);
 
 		// Step 3: From HuffTree, create encodings for each 8-bit char
-		String[] codings = makeCodingsFromTree(root);
+		String[] codings = new String[ALPH_SIZE + 1];
+		makeCodingsFromTree(root,"",codings);
 
 		// Step 4: Write "magic" number and tree to header of compressed file
 		out.writeBits(BITS_PER_INT, HUFF_TREE);
@@ -105,26 +106,20 @@ public class HuffProcessor {
 		return pq.remove(); // When pq size is 1, all trees have been combined into 1
 	}
 
-	private String[] makeCodingsFromTree(HuffNode root) {
-		String[] codings = new String[ALPH_SIZE + 1];
-		codingHelper(root,"",codings);
-		return codings;
-	}
-
 	/**
 	 * Generate encodings from HuffTree
 	 * @param root
 	 * @param path
 	 * @param codings
 	 */
-	private void codingHelper(HuffNode root, String path, String[] codings) {
+	private void makeCodingsFromTree(HuffNode root, String path, String[] codings) {
 		if (root.myLeft == null && root.myRight == null) { // If leaf node
 			codings[root.myValue] = path; // End path and return
 			return;
 		}
 		// Else, recursive calls, left add 0 to path, right add 1 to path
-		codingHelper(root.myLeft, path + "0", codings);
-		codingHelper(root.myRight, path + "1", codings);
+		makeCodingsFromTree(root.myLeft, path + "0", codings);
+		makeCodingsFromTree(root.myRight, path + "1", codings);
 	}
 
 	/**
