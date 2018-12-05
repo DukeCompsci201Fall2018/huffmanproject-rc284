@@ -69,10 +69,11 @@ public class HuffProcessor {
 	 */
 	private int[] readForCounts(BitInputStream in) {
 		int[] freq = new int[ALPH_SIZE + 1]; // 257 values --> 256 possible ASCII + PSEUDO_EOF
+		int bits = in.readBits(BITS_PER_WORD); // Read 8 bits (a char)
 
 		while (bits != -1) { // If sentinel -1 bit, break
-			int bits = in.readBits(BITS_PER_WORD); // Read 8 bits (a char)
 			freq[bits]++; // increase freq of that bit by 1
+			bits = in.readBits(BITS_PER_WORD); // Read another 8 bits (a char)
 		}
 
 		freq[PSEUDO_EOF] = 1; // Indicate one occurance of PSEUDO_EOF
