@@ -1,2 +1,0 @@
-Compsci 201 emphasizes problem-solving and understanding
-algorithms that scale.
