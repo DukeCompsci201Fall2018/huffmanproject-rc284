@@ -99,7 +99,7 @@ public class HuffProcessor {
 			HuffNode left = pq.remove();
 			HuffNode right = pq.remove();
 			// Create new HuffTree w/ weight from left + right and left,right subtrees
-			HuffNode newTree = new HuffNode(-1, left.myWeight + right.myWeight, left, right);
+			HuffNode newTree = new HuffNode(0, left.myWeight + right.myWeight, left, right);
 			pq.add(newTree);
 		}
 
@@ -152,7 +152,9 @@ public class HuffProcessor {
 			if (bit == -1) {break;}
 
 			String code = codings[bit]; // Get encoding for bit
-			out.writeBits(code.length(), Integer.parseInt(code,2)); // Write encoded bit to out
+			if (code != null) {
+				out.writeBits(code.length(), Integer.parseInt(code, 2)); // Write encoded bit to out
+			}
 		}
 
 		String code = codings[PSEUDO_EOF]; // Get encoding for PSEUDO_EOF
